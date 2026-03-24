@@ -14,6 +14,41 @@ import {useState,useEffect} from "react";
   const handleSubmit=async(e)=>{
     e.preventDefault();
     if(editId){
-      await axios.put()
-    }
-  }
+      await axios.put('${API}/${edited}',{title});
+      setEditId(null);
+    }setTitle("");
+      fetchTodos();
+  };
+  const handleEdit=(todo)=>{
+    setTitle(todo.title);
+    setEditId(todo._id);
+  };
+ const handleDelete = async (id) => {
+  await axios.delete(`${API}/${id}`);
+  fetchTodos();
+};
+
+return (
+  <div>
+    <h1>Todo App</h1>
+
+    <form onSubmit={handleSubmit}>
+      <input
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+      />
+      <button>{editId ? "Update" : "Add"}</button>
+    </form>
+
+    {todos.map((t) => (
+      <div key={t._id}>
+        {t.title}
+        <button onClick={() => handleEdit(t)}>Edit</button>
+        <button onClick={() => handleDelete(t._id)}>Delete</button>
+      </div>
+    ))}
+  </div>
+);
+
+
+export default App;
